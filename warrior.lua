@@ -195,11 +195,9 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 	local _Avatar, _Avatar_RDY = ConRO:AbilityReady(Ability.Avatar, timeShift);
 	local _BattleShout, _BattleShout_RDY = ConRO:AbilityReady(Ability.BattleShout, timeShift);
 	local _Bladestorm, _Bladestorm_RDY = ConRO:AbilityReady(Ability.Bladestorm, timeShift);
-		 local _BladestormH, _BladestormH_RDY = ConRO:AbilityReady(Ability.BladestormH, timeShift);
 		local _MercilessBonegrinder_BUFF = ConRO:Aura(Buff.MercilessBonegrinder, timeShift);
 		local _Hurricane_BUFF = ConRO:Aura(Buff.Hurricane, timeShift);
 	local _Charge, _Charge_RDY = ConRO:AbilityReady(Ability.Charge, timeShift);
-		local _Charge_RANGE = ConRO:Targets(Ability.Charge);
 	local _Cleave, _Cleave_RDY = ConRO:AbilityReady(Ability.Cleave, timeShift);
 	local _ColossusSmash, _ColossusSmash_RDY, _ColossusSmash_CD = ConRO:AbilityReady(Ability.ColossusSmash, timeShift);
 		local _ColossusSmash_DEBUFF = ConRO:TargetAura(Debuff.ColossusSmash, timeShift);
@@ -223,7 +221,7 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 		local _DivineShield_BUFF = ConRO:UnitAura(642, timeShift, 'target', 'HELPFUL');
 	local _Skullsplitter, _Skullsplitter_RDY = ConRO:AbilityReady(Ability.Skullsplitter, timeShift);
 	local _Slam, _Slam_RDY = ConRO:AbilityReady(Ability.Slam, timeShift);
-	local _SpearofBastion, _SpearofBastion_RDY = ConRO:AbilityReady(Ability.SpearofBastion, timeShift);
+	local _ChampionsSpear, _ChampionsSpear_RDY = ConRO:AbilityReady(Ability.ChampionsSpear, timeShift);
 	local _StormBolt, _StormBolt_RDY = ConRO:AbilityReady(Ability.StormBolt, timeShift);
 	local _SweepingStrikes, _SweepingStrikes_RDY = ConRO:AbilityReady(Ability.SweepingStrikes, timeShift);
 		local _SweepingStrikes_BUFF = ConRO:Aura(Buff.SweepingStrikes, timeShift);
@@ -239,10 +237,6 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 		_Execute = _MassacreExecute;
 	end
 
-	if tChosen[Ability.Hurricane.talentID] then
-		_Bladestorm, _Bladestorm_RDY = _BladestormH, _BladestormH_RDY;
-	end
-
 --Indicators		
 	ConRO:AbilityInterrupt(_Pummel, _Pummel_RDY and ConRO:Interrupt());
 	ConRO:AbilityPurge(_ArcaneTorrent, _ArcaneTorrent_RDY and _target_in_melee and ConRO:Purgable());
@@ -255,7 +249,7 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 	ConRO:AbilityBurst(_ColossusSmash, _ColossusSmash_RDY and not tChosen[Ability.Warbreaker.talentID] and ConRO:BurstMode(_ColossusSmash));
 	ConRO:AbilityBurst(_SweepingStrikes, _SweepingStrikes_RDY and (ConRO_AutoButton:IsVisible() and _enemies_in_melee >= 2) and ConRO:BurstMode(_SweepingStrikes));
 	ConRO:AbilityBurst(_Warbreaker, _Warbreaker_RDY and ConRO:BurstMode(_Warbreaker));
-	ConRO:AbilityBurst(_SpearofBastion, _SpearofBastion_RDY and _in_combat and ConRO:BurstMode(_SpearofBastion));
+	ConRO:AbilityBurst(_ChampionsSpear, _ChampionsSpear_RDY and _in_combat and ConRO:BurstMode(_ChampionsSpear));
 	ConRO:AbilityBurst(_ThunderousRoar, _ThunderousRoar_RDY and _target_in_10yrds and (_TestofMight_BUFF or _InForTheKill_BUFF) and ConRO:BurstMode(_ThunderousRoar));
 --Warnings	
 
@@ -297,9 +291,9 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 				_MortalStrike_RDY = false;
 			end
 
-			if _SpearofBastion_RDY and (_ColossusSmash_DEBUFF or _TestofMight_BUFF) and ConRO:FullMode(_SpearofBastion) then
-				tinsert(ConRO.SuggestedSpells, _SpearofBastion);
-				_SpearofBastion_RDY = false;
+			if _ChampionsSpear_RDY and (_ColossusSmash_DEBUFF or _TestofMight_BUFF) and ConRO:FullMode(_ChampionsSpear) then
+				tinsert(ConRO.SuggestedSpells, _ChampionsSpear);
+				_ChampionsSpear_RDY = false;
 			end
 
 			if _ThunderousRoar_RDY and (_TestofMight_BUFF or _InForTheKill_BUFF) and _target_in_10yrds and ConRO:FullMode(_ThunderousRoar) then
@@ -371,9 +365,9 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 				end
 			end
 		else
-			if _SpearofBastion_RDY and (_ColossusSmash_DEBUFF or _TestofMight_BUFF) and ConRO:FullMode(_SpearofBastion) then
-				tinsert(ConRO.SuggestedSpells, _SpearofBastion);
-				_SpearofBastion_RDY = false;
+			if _ChampionsSpear_RDY and (_ColossusSmash_DEBUFF or _TestofMight_BUFF) and ConRO:FullMode(_SpearofBastion) then
+				tinsert(ConRO.SuggestedSpells, _ChampionsSpear);
+				_ChampionsSpear_RDY = false;
 			end
 
 			if _Avatar_RDY and tChosen[Ability.BlademastersTorment.talentID] and ConRO:FullMode(_Avatar) then
@@ -480,10 +474,10 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 	local _Avatar, _Avatar_RDY = ConRO:AbilityReady(Ability.Avatar, timeShift);
 	local _BattleShout, _BattleShout_RDY = ConRO:AbilityReady(Ability.BattleShout, timeShift);
 	local _Bloodbath, _, _BloodbathCD = ConRO:AbilityReady(Ability.Bloodbath, timeShift);
+	local _Bladestorm, _Bladestorm_RDY = ConRO:AbilityReady(Ability.Bladestorm, timeShift);
 	local _Bloodthirst, _Bloodthirst_RDY = ConRO:AbilityReady(Ability.Bloodthirst, timeShift + 0.5);
 		local _Enrage_BUFF = ConRO:Aura(Buff.Enrage, timeShift);
 	local _Charge, _Charge_RDY = ConRO:AbilityReady(Ability.Charge, timeShift);
-		local _Charge_RANGE = ConRO:IsSpellInRange(Ability.Charge, 'target');
 	local _CrushingBlow, _, _CrushingBlowCD = ConRO:AbilityReady(Ability.CrushingBlow, timeShift);
 	local _Execute, _Execute_RDY = ConRO:AbilityReady(Ability.Execute, timeShift);
 		local _SuddenDeath_BUFF = ConRO:Aura(Buff.SuddenDeath, timeShift);
@@ -502,7 +496,7 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 	local _ShatteringThrow, _ShatteringThrow_RDY = ConRO:AbilityReady(Ability.ShatteringThrow, timeShift);
 		local _IceBlock_BUFF = ConRO:UnitAura(45438, timeShift, 'target', 'HELPFUL');
 		local _DivineShield_BUFF = ConRO:UnitAura(642, timeShift, 'target', 'HELPFUL');
-	local _SpearofBastion, _SpearofBastion_RDY = ConRO:AbilityReady(Ability.SpearofBastion, timeShift);
+	local _ChampionsSpear, _ChampionsSpear_RDY = ConRO:AbilityReady(Ability.ChampionsSpear, timeShift);
 	local _ThunderousRoar, _ThunderousRoar_RDY = ConRO:AbilityReady(Ability.ThunderousRoar, timeShift);
 	local _Whirlwind, _Whirlwind_RDY = ConRO:AbilityReady(Ability.Whirlwind, timeShift);
 		local _Whirlwind_BUFF, _Whirlwind_COUNT = ConRO:Aura(Buff.Whirlwind, timeShift);
@@ -530,8 +524,9 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 	ConRO:AbilityMovement(_Charge, _Charge_RDY and _Charge_RANGE);
 
 	ConRO:AbilityBurst(_Avatar, _Avatar_RDY and _Recklessness_BUFF and ((_Enrage_BUFF and tChosen[Ability.TitansTorment.talentID]) or not tChosen[Ability.TitansTorment.talentID]) and ConRO:BurstMode(_Avatar));
+	ConRO:AbilityBurst(_Bladestorm, _Bladestorm_RDY and _Recklessness_BUFF and ((_Enrage_BUFF and tChosen[Ability.TitansTorment.talentID]) or not tChosen[Ability.TitansTorment.talentID]) and ConRO:BurstMode(_Bladestorm));
 	ConRO:AbilityBurst(_Recklessness, _Recklessness_RDY and ConRO:BurstMode(_Recklessness));
-	ConRO:AbilityBurst(_SpearofBastion, _SpearofBastion_RDY and _in_combat and ConRO:BurstMode(_SpearofBastion));
+	ConRO:AbilityBurst(_ChampionsSpear, _ChampionsSpear_RDY and _in_combat and ConRO:BurstMode(_ChampionsSpear));
 	ConRO:AbilityBurst(_Ravager, _Ravager_RDY and ConRO:BurstMode(_Ravager));
 
 --Warnings
@@ -546,7 +541,7 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 
 		if _Whirlwind_RDY and tChosen[Ability.ImprovedWhirlwind.talentID] and not _Whirlwind_BUFF and (ConRO_AutoButton:IsVisible() and _enemies_in_melee >= 2) then
 			tinsert(ConRO.SuggestedSpells, _Whirlwind);
-			_Whirlwind_BUFF = true;
+			_Whirlwind_BUFF = false;
 		end
 
 		if _Avatar_RDY and tChosen[Ability.BerserkersTorment.talentID] and ConRO:FullMode(_Avatar) then
@@ -563,18 +558,28 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 			tinsert(ConRO.SuggestedSpells, _Avatar);
 			_Avatar_RDY = false;
 		end
+		
+		if _Bladestorm_RDY and _Recklessness_BUFF and (_Enrage_BUFF or tChosen[Ability.TitansTorment.talentID]) and ConRO:FullMode(_Bladestorm) then
+			tinsert(ConRO.SuggestedSpells, _Bladestorm);
+			_Bladestorm_RDY = false;
+		end
 
-		if _SpearofBastion_RDY and _Enrage_BUFF and ConRO:FullMode(_SpearofBastion) then
-			tinsert(ConRO.SuggestedSpells, _SpearofBastion);
-			_SpearofBastion_RDY = false;
+		if _ChampionsSpear_RDY and _Enrage_BUFF and ConRO:FullMode(_ChampionsSpear) then
+			tinsert(ConRO.SuggestedSpells, _ChampionsSpear);
+			_ChampionsSpear_RDY = false;
 		end
 
 		if _ThunderousRoar_RDY and _Enrage_BUFF then
 			tinsert(ConRO.SuggestedSpells, _ThunderousRoar);
 			_ThunderousRoar_RDY = false;
 		end
+		
+		if _Bloodthirst_RDY and tChosen[Ability.RecklessAbandon.talentID] and _RecklessAbandon_BUFF then
+			tinsert(ConRO.SuggestedSpells, _Bloodthirst);
+			_Bloodthirst_RDY = false;
+		end
 
-		if _RagingBlow_RDY and tChosen[Ability.RecklessAbandon.talentID] and _RecklessAbandon_BUFF and not tChosen[Ability.Annihilator.talentID] then
+		if _RagingBlow_RDY and tChosen[Ability.RecklessAbandon.talentID] and _RecklessAbandon_BUFF then
 			tinsert(ConRO.SuggestedSpells, _RagingBlow);
 			_RagingBlow_CHARGES = _RagingBlow_CHARGES - 1;
 		end
@@ -609,7 +614,7 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 			_Bloodthirst_RDY = false;
 		end
 
-		if _RagingBlow_RDY and _RagingBlow_CHARGES >= 1 and not tChosen[Ability.Annihilator.talentID] then
+		if _RagingBlow_RDY and _RagingBlow_CHARGES >= 1 then
 			tinsert(ConRO.SuggestedSpells, _RagingBlow);
 			_RagingBlow_CHARGES = _RagingBlow_CHARGES - 1;
 		end
@@ -617,11 +622,6 @@ function ConRO.Warrior.Fury(_, timeShift, currentSpell, gcd, tChosen)
 		if _Bloodthirst_RDY then
 			tinsert(ConRO.SuggestedSpells, _Bloodthirst);
 			_Bloodthirst_RDY = false;
-		end
-
-		if _Slam_RDY and tChosen[Ability.StormofSwords.talentID] then
-			tinsert(ConRO.SuggestedSpells, _Slam);
-			_Slam_RDY = false;
 		end
 
 		if _Whirlwind_RDY then
@@ -676,7 +676,6 @@ function ConRO.Warrior.Protection(_, timeShift, currentSpell, gcd, tChosen)
 		local _Avatar_BUFF = ConRO:Aura(Buff.Avatar, timeShift);
 	local _BattleShout, _BattleShout_RDY = ConRO:AbilityReady(Ability.BattleShout, timeShift);
 	local _Charge, _Charge_RDY = ConRO:AbilityReady(Ability.Charge, timeShift);
-		local _Charge_RANGE = ConRO:IsSpellInRange(Ability.Charge, 'target');
 	local _DemoralizingShout, _DemoralizingShout_RDY = ConRO:AbilityReady(Ability.DemoralizingShout, timeShift);
 	local _Devastate, _Devastate_RDY = ConRO:AbilityReady(Ability.Devastate, timeShift);
 	local _Execute, _Execute_RDY = ConRO:AbilityReady(Ability.Execute, timeShift);
@@ -694,7 +693,7 @@ function ConRO.Warrior.Protection(_, timeShift, currentSpell, gcd, tChosen)
 	local _ShieldSlam, _ShieldSlam_RDY, _ShieldSlam_CD = ConRO:AbilityReady(Ability.ShieldSlam, timeShift);
 		local _ViolentOutburst_BUFF = ConRO:Aura(Buff.ViolentOutburst, timeShift);
 	local _Shockwave, _Shockwave_RDY = ConRO:AbilityReady(Ability.Shockwave, timeShift);
-	local _SpearofBastion, _SpearofBastion_RDY = ConRO:AbilityReady(Ability.SpearofBastion, timeShift);
+	local _ChampionsSpear, _ChampionsSpear_RDY = ConRO:AbilityReady(Ability.ChampionsSpear, timeShift);
 	local _StormBolt, _StormBolt_RDY = ConRO:AbilityReady(Ability.StormBolt, timeShift);
 	local _Taunt, _Taunt_RDY = ConRO:AbilityReady(Ability.Taunt, timeShift);
 	local _ThunderClap, _ThunderClap_RDY = ConRO:AbilityReady(Ability.ThunderClap, timeShift);
@@ -715,7 +714,7 @@ function ConRO.Warrior.Protection(_, timeShift, currentSpell, gcd, tChosen)
 	ConRO:AbilityBurst(_DemoralizingShout, _DemoralizingShout_RDY and tChosen[Ability.BoomingVoice.talentID] and _is_Enemy and ConRO:BurstMode(_DemoralizingShout));
 	ConRO:AbilityBurst(_Ravager, _Ravager_RDY and _is_Enemy and ConRO:BurstMode(_Ravager));
 	ConRO:AbilityBurst(_ShieldCharge, _ShieldCharge_RDY and ConRO:BurstMode(_ShieldCharge));
-	ConRO:AbilityBurst(_SpearofBastion, _SpearofBastion_RDY and _in_combat and ConRO:BurstMode(_SpearofBastion));
+	ConRO:AbilityBurst(_ChampionsSpear, _ChampionsSpear_RDY and _in_combat and ConRO:BurstMode(_ChampionsSpear));
 
 --Warnings
 
@@ -746,9 +745,9 @@ function ConRO.Warrior.Protection(_, timeShift, currentSpell, gcd, tChosen)
 			_ThunderousRoar_RDY = false;
 		end
 
-		if _SpearofBastion_RDY and ConRO:FullMode(_SpearofBastion) then
-			tinsert(ConRO.SuggestedSpells, _SpearofBastion);
-			_SpearofBastion_RDY = false;
+		if _ChampionsSpear_RDY and ConRO:FullMode(_ChampionsSpear) then
+			tinsert(ConRO.SuggestedSpells, _ChampionsSpear);
+			_ChampionsSpear_RDY = false;
 		end
 
 		if _ViolentOutburst_BUFF then
