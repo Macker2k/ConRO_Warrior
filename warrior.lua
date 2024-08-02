@@ -228,7 +228,6 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 	local _ThunderClap, _ThunderClap_RDY = ConRO:AbilityReady(Ability.ThunderClap, timeShift);
 	local _ThunderousRoar, _ThunderousRoar_RDY = ConRO:AbilityReady(Ability.ThunderousRoar, timeShift);
 	local _Warbreaker, _Warbreaker_RDY, _Warbreaker_CD = ConRO:AbilityReady(Ability.Warbreaker, timeShift);
-	local _Whirlwind, _Whirlwind_RDY = ConRO:AbilityReady(Ability.Whirlwind, timeShift);
 
 --Conditions
 	if tChosen[Ability.Massacre.talentID] then
@@ -255,7 +254,7 @@ function ConRO.Warrior.Arms(_, timeShift, currentSpell, gcd, tChosen)
 
 --Rotations	
 	for i = 1, 2, 1 do
-		if _ThunderClap_RDY and not _Rend_DEBUFF and _enemies_in_melee >= 2 and tChosen[Ability.BloodandThunder.talentID] and tChosen[Ability.Rend.talentID] then
+		if _ThunderClap_RDY and not _Rend_DEBUFF and _enemies_in_melee >= 2 and tChosen[Ability.Rend.talentID] then
 			tinsert(ConRO.SuggestedSpells, _ThunderClap);
 			_ThunderClap_RDY = false;
 		end
